@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:medicaux_desktop/screen/dashboard.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,11 +16,56 @@ class _LoginScreenState extends State<LoginScreen> {
   var _password = "";
   final _formKey = GlobalKey<FormState>();
 
-  void _submit() {
+  void _submit() async {
     final _isValid = _formKey.currentState!.validate();
 
     if (_isValid) {
       _formKey.currentState!.save();
+      final response = await http.post(
+        Uri.parse('http://localhost:8080/user'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, String>{
+            'username': _username,
+            'password': _password,
+          },
+        ),
+      );
+      if (response.statusCode == 202) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const DashBoard(),
+          ),
+        );
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("login successfully"),
+          ),
+        );
+      } else if (response.statusCode == 401) {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("enter a valid username and password"),
+          ),
+        );
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("an error happend"),
+          ),
+        );
+      }
     }
   }
 
