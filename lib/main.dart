@@ -15,14 +15,15 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData().copyWith(
+        tabBarTheme: const TabBarTheme(unselectedLabelColor: Colors.grey),
         brightness: Brightness.light,
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 83, 177, 117),
-          primary: const Color.fromARGB(255, 0, 152, 185),
-          secondary: const Color.fromARGB(255, 0, 56, 68),
-          background: const Color.fromARGB(255, 255, 255, 255),
-        ),
+            seedColor: const Color.fromARGB(255, 83, 177, 117),
+            primary: const Color.fromARGB(255, 0, 152, 185),
+            secondary: const Color.fromARGB(255, 0, 56, 68),
+            background: const Color.fromARGB(255, 255, 255, 255),
+            onPrimary: Colors.deepPurpleAccent),
         textTheme: GoogleFonts.montserratAlternatesTextTheme(
           Theme.of(context).textTheme,
         ),
