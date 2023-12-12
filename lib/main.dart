@@ -24,9 +24,7 @@ class MainApp extends StatelessWidget {
             secondary: const Color.fromARGB(255, 0, 56, 68),
             background: const Color.fromARGB(255, 255, 255, 255),
             onPrimary: Colors.deepPurpleAccent),
-        textTheme: GoogleFonts.montserratAlternatesTextTheme(
-          Theme.of(context).textTheme,
-        ),
+        textTheme: GoogleFonts.robotoTextTheme(),
       ),
       home: const LoginScreen(),
     );
