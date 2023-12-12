@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.4
   http: ^0.13.5
+  sidebarx: ^0.16.3
 
 dev_dependencies:
   flutter_test:
@@ -28,5 +29,9 @@ flutter:
   assets:
    - assets/images/login_picture.png
    - assets/images/logo.png
+   - assets/images/doctor.png
+   - assets/images/doctor_staff.png
+   - assets/images/nurse.png
+   - assets/traitement.png
 
   
