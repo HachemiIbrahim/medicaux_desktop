@@ -12,10 +12,10 @@ class Patient {
 
   factory Patient.fromJson(Map<String, dynamic> json) {
     return Patient(
-      patientId: int.tryParse(json['patientId']) ?? 0,
+      patientId: int.parse(json['patientId']),
       name: json['name'],
-      age: int.tryParse(json['age']) ?? 0,
-      phoneNumber: json['phoneNumber'],
+      age: int.parse(json['age']),
+      phoneNumber: json['phone_number'],
     );
   }
 }
