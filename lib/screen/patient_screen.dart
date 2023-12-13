@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:medicaux_desktop/widget/patient_widget.dart';
 
 import '../model/patient.dart';
+import 'add_edit_patient.dart';
 
 class PatientScreen extends StatefulWidget {
   const PatientScreen({super.key});
@@ -14,6 +15,18 @@ class PatientScreen extends StatefulWidget {
 }
 
 class _PatientScreenState extends State<PatientScreen> {
+  Future<void> addPatient() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20.0),
+          child: const AddEditPatientScreen(),
+        );
+      },
+    );
+  }
+
   Future<void> refresh() async {
     setState(() {
       fetchPatients();
@@ -45,7 +58,9 @@ class _PatientScreenState extends State<PatientScreen> {
             Container(
               margin: const EdgeInsets.only(right: 12),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  addPatient();
+                },
                 icon: const Icon(Icons.add),
               ),
             )
@@ -60,18 +75,24 @@ class _PatientScreenState extends State<PatientScreen> {
               );
             } else if (snapshot.hasData) {
               var data = snapshot.data;
-              return Container(
-                margin: const EdgeInsets.all(10),
-                child: ListView.builder(
-                  itemCount: data!.length,
-                  itemBuilder: (context, index) {
-                    return PatientWidget(
-                      patient: data[index],
-                      refresher: refresh,
-                    );
-                  },
-                ),
-              );
+              if (data!.isEmpty) {
+                return const Center(
+                  child: Text("There is no patients"),
+                );
+              } else {
+                return Container(
+                  margin: const EdgeInsets.all(10),
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return PatientWidget(
+                        patient: data[index],
+                        refresher: refresh,
+                      );
+                    },
+                  ),
+                );
+              }
             } else {
               return const Center(
                 child: Text("There is no patients"),

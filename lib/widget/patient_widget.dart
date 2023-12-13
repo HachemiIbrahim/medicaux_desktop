@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/model/patient.dart';
 import 'package:http/http.dart' as http;
+import 'package:medicaux_desktop/screen/add_edit_patient.dart';
 
 class PatientWidget extends StatelessWidget {
   const PatientWidget(
@@ -11,6 +12,18 @@ class PatientWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> editPatient() async {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(20.0),
+            child: AddEditPatientScreen(patient: patient),
+          );
+        },
+      );
+    }
+
     Future<void> deletePatient(int id) async {
       final response =
           await http.delete(Uri.parse('http://localhost:8080/patient/$id'));
@@ -86,7 +99,9 @@ class PatientWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          editPatient();
+                        },
                         icon: const Icon(Icons.edit, color: Colors.blue),
                       ),
                       IconButton(
