@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/model/patient.dart';
+import 'package:http/http.dart' as http;
 
 class PatientWidget extends StatelessWidget {
-  const PatientWidget({super.key, required this.patient});
+  const PatientWidget(
+      {super.key, required this.patient, required this.refresher});
 
   final Patient patient;
+  final Future<void> Function() refresher;
+
   @override
   Widget build(BuildContext context) {
+    Future<void> deletePatient(int id) async {
+      final response =
+          await http.delete(Uri.parse('http://localhost:8080/patient/$id'));
+      if (response.statusCode == 202) {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Patient deleted successfully'),
+          ),
+        );
+        refresher();
+      } else {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).clearSnackBars();
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('an error hapend'),
+        ));
+      }
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Card(
@@ -63,7 +90,9 @@ class PatientWidget extends StatelessWidget {
                         icon: const Icon(Icons.edit, color: Colors.blue),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          deletePatient(patient.patientId);
+                        },
                         icon: const Icon(Icons.delete, color: Colors.red),
                       )
                     ],

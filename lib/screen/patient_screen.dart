@@ -14,6 +14,12 @@ class PatientScreen extends StatefulWidget {
 }
 
 class _PatientScreenState extends State<PatientScreen> {
+  Future<void> refresh() async {
+    setState(() {
+      fetchPatients();
+    });
+  }
+
   Future<List<Patient>> fetchPatients() async {
     final response = await http.get(Uri.parse('http://localhost:8080/patient'));
 
@@ -59,7 +65,10 @@ class _PatientScreenState extends State<PatientScreen> {
                 child: ListView.builder(
                   itemCount: data!.length,
                   itemBuilder: (context, index) {
-                    return PatientWidget(patient: data[index]);
+                    return PatientWidget(
+                      patient: data[index],
+                      refresher: refresh,
+                    );
                   },
                 ),
               );
