@@ -64,38 +64,29 @@ class PatientWidget extends StatelessWidget {
                   child: Icon(Icons.person, color: Colors.white),
                 ),
                 SizedBox(width: constraints.maxWidth * 0.01),
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        patient.name,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.blue),
-                        textAlign: TextAlign.left,
-                      ),
-                      SizedBox(width: constraints.maxWidth * 0.01),
-                      Text(
-                        "Age: ${patient.age}",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black),
-                      ),
-                      SizedBox(width: constraints.maxWidth * 0.01),
-                      Flexible(
-                        child: Text(
-                          "Phone Number: ${patient.phoneNumber}",
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  patient.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.blue),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(width: constraints.maxWidth * 0.01),
+                Text(
+                  "Age: ${patient.age}",
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black),
+                ),
+                SizedBox(width: constraints.maxWidth * 0.01),
+                Text(
+                  "Phone Number: ${patient.phoneNumber}",
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black),
                 ),
                 const Spacer(),
                 Expanded(

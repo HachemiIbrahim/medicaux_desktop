@@ -64,35 +64,25 @@ class DoctorWidget extends StatelessWidget {
                   child: Icon(Icons.person, color: Colors.white),
                 ),
                 SizedBox(width: constraints.maxWidth * 0.01),
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        doctor.name,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.blue),
-                        textAlign: TextAlign.left,
-                      ),
-                      SizedBox(width: constraints.maxWidth * 0.01),
-                      Flexible(
-                        child: Text(
-                          "speciality : ${doctor.speciality}",
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
+                Text(
+                  doctor.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.blue),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(width: constraints.maxWidth * 0.01),
+                Text(
+                  "speciality : ${doctor.speciality}",
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black),
                 ),
                 const Spacer(),
                 Expanded(
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
