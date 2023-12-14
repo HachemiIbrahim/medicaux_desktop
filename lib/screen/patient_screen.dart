@@ -21,7 +21,7 @@ class _PatientScreenState extends State<PatientScreen> {
       builder: (BuildContext context) {
         return Container(
           padding: const EdgeInsets.all(20.0),
-          child: const AddEditPatientScreen(),
+          child: AddEditPatientScreen(refresher: refresh),
         );
       },
     );
@@ -48,57 +48,58 @@ class _PatientScreenState extends State<PatientScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Patients"),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.search),
+      appBar: AppBar(
+        title: const Text("Patients"),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.search),
+          ),
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            child: IconButton(
+              onPressed: () {
+                addPatient();
+              },
+              icon: const Icon(Icons.add),
             ),
-            Container(
-              margin: const EdgeInsets.only(right: 12),
-              child: IconButton(
-                onPressed: () {
-                  addPatient();
-                },
-                icon: const Icon(Icons.add),
-              ),
-            )
-          ],
-        ),
-        body: FutureBuilder(
-          future: fetchPatients(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasData) {
-              var data = snapshot.data;
-              if (data!.isEmpty) {
-                return const Center(
-                  child: Text("There is no patients"),
-                );
-              } else {
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (context, index) {
-                      return PatientWidget(
-                        patient: data[index],
-                        refresher: refresh,
-                      );
-                    },
-                  ),
-                );
-              }
-            } else {
+          )
+        ],
+      ),
+      body: FutureBuilder(
+        future: fetchPatients(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasData) {
+            var data = snapshot.data;
+            if (data!.isEmpty) {
               return const Center(
                 child: Text("There is no patients"),
               );
+            } else {
+              return Container(
+                margin: const EdgeInsets.all(10),
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    return PatientWidget(
+                      patient: data[index],
+                      refresher: refresh,
+                    );
+                  },
+                ),
+              );
             }
-          },
-        ));
+          } else {
+            return const Center(
+              child: Text("There is no patients"),
+            );
+          }
+        },
+      ),
+    );
   }
 }

@@ -18,7 +18,10 @@ class PatientWidget extends StatelessWidget {
         builder: (BuildContext context) {
           return Container(
             padding: const EdgeInsets.all(20.0),
-            child: AddEditPatientScreen(patient: patient),
+            child: AddEditPatientScreen(
+              patient: patient,
+              refresher: refresher,
+            ),
           );
         },
       );

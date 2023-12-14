@@ -1,17 +1,90 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../model/patient.dart';
+import 'package:http/http.dart' as http;
 
 class AddEditPatientScreen extends StatefulWidget {
   final Patient? patient;
+  final Future<void> Function() refresher;
 
-  const AddEditPatientScreen({super.key, this.patient});
+  const AddEditPatientScreen(
+      {super.key, this.patient, required this.refresher});
 
   @override
   State<AddEditPatientScreen> createState() => _AddEditPatientScreenState();
 }
 
 class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
+  Future<void> addPatient() async {
+    final response = await http.post(
+      Uri.parse('http://localhost:8080/patient'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'name': _name,
+          'age': _age.toString(),
+          'phoneNumber': _phoneNumber
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("patient created successfully"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("an error happened"),
+        ),
+      );
+    }
+  }
+
+  Future<void> updatePatient() async {
+    final response = await http.patch(
+      Uri.parse('http://localhost:8080/patient/${widget.patient!.patientId}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'name': _name,
+          'age': _age.toString(),
+          'phoneNumber': _phoneNumber
+        },
+      ),
+    );
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    if (response.statusCode == 202) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("patient updated successfully"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("an error happened"),
+        ),
+      );
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   int _age = 0;
@@ -109,7 +182,17 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  // Add or edit the patient
+                  if (widget.patient == null) {
+                    addPatient().then((_) {
+                      Navigator.of(context).pop();
+                      widget.refresher();
+                    });
+                  } else {
+                    updatePatient().then((_) {
+                      Navigator.of(context).pop();
+                      widget.refresher();
+                    });
+                  }
                 }
               },
               child: Text('Save'),
