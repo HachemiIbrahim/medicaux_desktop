@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../model/patient.dart';
+import 'package:medicaux_desktop/model/patient.dart';
 import 'package:http/http.dart' as http;
 
 class AddEditPatientScreen extends StatefulWidget {
@@ -110,7 +110,7 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
       body: Form(
         key: _formKey,
         child: Column(
-          children: <Widget>[
+          children: [
             const SizedBox(
               height: 12,
             ),
@@ -196,7 +196,7 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
                   }
                 }
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),

@@ -1,27 +1,27 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:medicaux_desktop/screen/doctor/add_edit_doctor.dart';
+import 'package:medicaux_desktop/widget/doctor_widget.dart';
+
+import '../../model/doctor.dart';
 import 'package:http/http.dart' as http;
-import 'package:medicaux_desktop/widget/patient_widget.dart';
 
-import '../model/patient.dart';
-import 'add_edit_patient.dart';
-
-class PatientScreen extends StatefulWidget {
-  const PatientScreen({super.key});
+class DoctorScreen extends StatefulWidget {
+  const DoctorScreen({super.key});
 
   @override
-  State<PatientScreen> createState() => _PatientScreenState();
+  State<DoctorScreen> createState() => _DoctorScreenState();
 }
 
-class _PatientScreenState extends State<PatientScreen> {
-  Future<void> addPatient() async {
+class _DoctorScreenState extends State<DoctorScreen> {
+  Future<void> addDoctor() async {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
           padding: const EdgeInsets.all(20.0),
-          child: AddEditPatientScreen(refresher: refresh),
+          child: AddEditDoctorScreen(refresher: refresh),
         );
       },
     );
@@ -33,15 +33,15 @@ class _PatientScreenState extends State<PatientScreen> {
     });
   }
 
-  Future<List<Patient>> fetchPatients() async {
-    final response = await http.get(Uri.parse('http://localhost:8080/patient'));
+  Future<List<Doctor>> fetchPatients() async {
+    final response = await http.get(Uri.parse('http://localhost:8080/doctor'));
 
     if (response.statusCode == 200) {
       return (jsonDecode(response.body) as List)
-          .map((i) => Patient.fromJson(i))
+          .map((i) => Doctor.fromJson(i))
           .toList();
     } else {
-      throw Exception('Failed to load patients');
+      throw Exception('Failed to load Doctors');
     }
   }
 
@@ -49,17 +49,19 @@ class _PatientScreenState extends State<PatientScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Patients"),
+        title: const Text("Doctors"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              addDoctor();
+            },
             icon: const Icon(Icons.search),
           ),
           Container(
             margin: const EdgeInsets.only(right: 12),
             child: IconButton(
               onPressed: () {
-                addPatient();
+                addDoctor();
               },
               icon: const Icon(Icons.add),
             ),
@@ -77,7 +79,7 @@ class _PatientScreenState extends State<PatientScreen> {
             var data = snapshot.data;
             if (data!.isEmpty) {
               return const Center(
-                child: Text("There is no patients"),
+                child: Text("There is no Doctors"),
               );
             } else {
               return Container(
@@ -85,8 +87,8 @@ class _PatientScreenState extends State<PatientScreen> {
                 child: ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
-                    return PatientWidget(
-                      patient: data[index],
+                    return DoctorWidget(
+                      doctor: data[index],
                       refresher: refresh,
                     );
                   },
@@ -95,7 +97,7 @@ class _PatientScreenState extends State<PatientScreen> {
             }
           } else {
             return const Center(
-              child: Text("There is no patients"),
+              child: Text("There is no Doctors"),
             );
           }
         },

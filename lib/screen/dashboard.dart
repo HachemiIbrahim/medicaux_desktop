@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/screen/doctor_staff.dart';
-import 'package:medicaux_desktop/screen/patient_screen.dart';
+import 'package:medicaux_desktop/screen/patient/patient_screen.dart';
 import 'package:medicaux_desktop/screen/staff_screen.dart';
 import 'package:medicaux_desktop/screen/traitement_screen.dart';
 
 import 'appointment_screen.dart';
-import 'doctor_screen.dart';
+import 'doctor/doctor_screen.dart';
 import 'home_screen.dart';
 
 class DashBoard extends StatefulWidget {

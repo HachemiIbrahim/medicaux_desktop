@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:medicaux_desktop/model/patient.dart';
+import 'package:medicaux_desktop/model/doctor.dart';
 import 'package:http/http.dart' as http;
-import 'package:medicaux_desktop/screen/patient/add_edit_patient.dart';
+import 'package:medicaux_desktop/screen/doctor/add_edit_doctor.dart';
 
-class PatientWidget extends StatelessWidget {
-  const PatientWidget(
-      {super.key, required this.patient, required this.refresher});
+class DoctorWidget extends StatelessWidget {
+  const DoctorWidget(
+      {super.key, required this.doctor, required this.refresher});
 
-  final Patient patient;
+  final Doctor doctor;
   final Future<void> Function() refresher;
 
   @override
   Widget build(BuildContext context) {
-    Future<void> editPatient() async {
+    Future<void> editDoctor() async {
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           return Container(
             padding: const EdgeInsets.all(20.0),
-            child: AddEditPatientScreen(
-              patient: patient,
+            child: AddEditDoctorScreen(
+              doctor: doctor,
               refresher: refresher,
             ),
           );
@@ -27,16 +27,16 @@ class PatientWidget extends StatelessWidget {
       );
     }
 
-    Future<void> deletePatient(int id) async {
+    Future<void> deleteDoctor(int id) async {
       final response =
-          await http.delete(Uri.parse('http://localhost:8080/patient/$id'));
+          await http.delete(Uri.parse('http://localhost:8080/doctor/$id'));
       if (response.statusCode == 202) {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).clearSnackBars();
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Patient deleted successfully'),
+            content: Text('Doctor deleted successfully'),
           ),
         );
         refresher();
@@ -69,7 +69,7 @@ class PatientWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        patient.name,
+                        doctor.name,
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -77,17 +77,9 @@ class PatientWidget extends StatelessWidget {
                         textAlign: TextAlign.left,
                       ),
                       SizedBox(width: constraints.maxWidth * 0.01),
-                      Text(
-                        "Age: ${patient.age}",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black),
-                      ),
-                      SizedBox(width: constraints.maxWidth * 0.01),
                       Flexible(
                         child: Text(
-                          "Phone Number: ${patient.phoneNumber}",
+                          "speciality : ${doctor.speciality}",
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
@@ -105,13 +97,13 @@ class PatientWidget extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          editPatient();
+                          editDoctor();
                         },
                         icon: const Icon(Icons.edit, color: Colors.blue),
                       ),
                       IconButton(
                         onPressed: () {
-                          deletePatient(patient.patientId);
+                          deleteDoctor(doctor.doctorId);
                         },
                         icon: const Icon(Icons.delete, color: Colors.red),
                       )
