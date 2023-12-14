@@ -133,7 +133,7 @@ class _AddEditDoctorScreenState extends State<AddEditDoctorScreen> {
             TextFormField(
               initialValue: _speciality,
               decoration: InputDecoration(
-                labelText: 'Pjone Number',
+                labelText: 'speciality',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),

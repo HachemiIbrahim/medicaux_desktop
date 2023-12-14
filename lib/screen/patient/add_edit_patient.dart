@@ -136,7 +136,7 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
               height: 12,
             ),
             TextFormField(
-              initialValue: _age.toString(),
+              initialValue: _age == 0 ? "" : _age.toString(),
               decoration: InputDecoration(
                 labelText: 'Age',
                 border: OutlineInputBorder(

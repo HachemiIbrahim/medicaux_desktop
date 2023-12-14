@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("enter a valid username and password"),
+            content: Text("rhis user doesn't exist"),
           ),
         );
       } else {
