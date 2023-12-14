@@ -4,7 +4,7 @@ import 'package:medicaux_desktop/screen/patient/patient_screen.dart';
 import 'package:medicaux_desktop/screen/staff_screen.dart';
 import 'package:medicaux_desktop/screen/traitement_screen.dart';
 
-import 'appointment_screen.dart';
+import 'appointment/appointment_screen.dart';
 import 'doctor/doctor_screen.dart';
 import 'home_screen.dart';
 
