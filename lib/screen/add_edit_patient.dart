@@ -64,9 +64,9 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
         },
       ),
     );
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+
     if (response.statusCode == 202) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).clearSnackBars();
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
@@ -75,6 +75,7 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
         ),
       );
     } else {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).clearSnackBars();
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(

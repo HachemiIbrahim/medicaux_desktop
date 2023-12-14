@@ -85,12 +85,14 @@ class PatientWidget extends StatelessWidget {
                             color: Colors.black), // change text style
                       ),
                       SizedBox(width: constraints.maxWidth * 0.01),
-                      Text(
-                        "Phone Number: ${patient.phoneNumber}",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black), // change text style
+                      Flexible(
+                        child: Text(
+                          "Phone Number: ${patient.phoneNumber}",
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black), // change text style
+                        ),
                       ),
                     ],
                   ),
