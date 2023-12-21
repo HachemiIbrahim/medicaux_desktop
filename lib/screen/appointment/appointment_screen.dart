@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/model/appointment.dart';
 import 'package:http/http.dart' as http;
+import 'package:medicaux_desktop/screen/appointment/add_edit_appointment.dart';
 import 'package:medicaux_desktop/widget/appointment_widget.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -15,15 +16,26 @@ class AppointmentScreen extends StatefulWidget {
 class _AppointmentScreenState extends State<AppointmentScreen> {
   Future<void> refresh() async {
     setState(() {
-      fetchPatients();
+      fetchAppointment();
     });
   }
 
-  Future<List<Appointment>> fetchPatients() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:8080/appointment'));
-    print(response.statusCode);
-    print(response.body);
+  Future<void> addAppointment() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20.0),
+          child: AddEditAppointment(refresher: refresh),
+        );
+      },
+    );
+  }
+
+  Future<List<Appointment>> fetchAppointment() async {
+    final response = await http.get(
+      Uri.parse('http://localhost:8080/appointment'),
+    );
     if (response.statusCode == 200) {
       return (jsonDecode(response.body) as List)
           .map((i) => Appointment.fromJson(i))
@@ -46,14 +58,16 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
           Container(
             margin: const EdgeInsets.only(right: 12),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                addAppointment();
+              },
               icon: const Icon(Icons.add),
             ),
           )
         ],
       ),
       body: FutureBuilder(
-        future: fetchPatients(),
+        future: fetchAppointment(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

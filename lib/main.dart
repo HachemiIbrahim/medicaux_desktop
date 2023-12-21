@@ -10,7 +10,6 @@ void main() async {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
-//rgb(0, 152, 185)
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -29,11 +29,11 @@ class _DoctorScreenState extends State<DoctorScreen> {
 
   Future<void> refresh() async {
     setState(() {
-      fetchPatients();
+      fetchDoctor();
     });
   }
 
-  Future<List<Doctor>> fetchPatients() async {
+  Future<List<Doctor>> fetchDoctor() async {
     final response = await http.get(Uri.parse('http://localhost:8080/doctor'));
 
     if (response.statusCode == 200) {
@@ -67,7 +67,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
         ],
       ),
       body: FutureBuilder(
-        future: fetchPatients(),
+        future: fetchDoctor(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(

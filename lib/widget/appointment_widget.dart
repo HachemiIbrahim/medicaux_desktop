@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/model/appointment.dart';
 import 'package:http/http.dart' as http;
+import 'package:medicaux_desktop/screen/appointment/add_edit_appointment.dart';
 
 class AppointmentWidget extends StatelessWidget {
   const AppointmentWidget(
@@ -10,6 +11,21 @@ class AppointmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> editAppointment() async {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(20.0),
+            child: AddEditAppointment(
+              appointment: appointment,
+              refresher: refresher,
+            ),
+          );
+        },
+      );
+    }
+
     Future<void> deleteAppointment(int id) async {
       final response =
           await http.delete(Uri.parse('http://localhost:8080/appointment/$id'));
@@ -86,7 +102,9 @@ class AppointmentWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          editAppointment();
+                        },
                         icon: const Icon(Icons.edit, color: Colors.blue),
                       ),
                       IconButton(
