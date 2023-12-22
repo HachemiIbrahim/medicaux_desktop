@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/screen/doctor_staff.dart';
 import 'package:medicaux_desktop/screen/patient/patient_screen.dart';
-import 'package:medicaux_desktop/screen/staff_screen.dart';
+import 'package:medicaux_desktop/screen/staff/staff_screen.dart';
 import 'package:medicaux_desktop/screen/traitement_screen.dart';
 
 import 'appointment/appointment_screen.dart';
