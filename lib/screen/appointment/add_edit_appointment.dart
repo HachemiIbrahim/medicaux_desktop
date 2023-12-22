@@ -17,8 +17,81 @@ class AddEditAppointment extends StatefulWidget {
 }
 
 class _AddEditAppointmentState extends State<AddEditAppointment> {
+  Future<void> addAppointment() async {
+    final response = await http.post(
+      Uri.parse('http://localhost:8080/appointment'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'patientId': patient.patientId.toString(),
+          'doctorId': doctor.doctorId.toString(),
+          'appointmentDate': _selectedDate
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("appointment created successfully"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("an error happened"),
+        ),
+      );
+    }
+  }
+
+  Future<void> updateAppointment() async {
+    final response = await http.patch(
+      Uri.parse(
+          'http://localhost:8080/appointment/${widget.appointment!.appointmentId}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, String>{
+          'patientId': patient.patientId.toString(),
+          'doctorId': doctor.doctorId.toString(),
+          'appointmentDate': _selectedDate
+        },
+      ),
+    );
+
+    if (response.statusCode == 202) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("appointment updated successfully"),
+        ),
+      );
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).clearSnackBars();
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("an error happened"),
+        ),
+      );
+    }
+  }
+
   List<Patient> patients = [];
   List<Doctor> doctors = [];
+  late Doctor doctor;
+  late Patient patient;
+
   String _selectedPatient = "";
   String _selectedDoctor = "";
   String _selectedDate = "";
@@ -33,6 +106,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
     fetchDoctor().then((value) => setState(() {
           doctors = value;
         }));
+
     if (widget.appointment != null) {
       _dateController.text = widget.appointment!.appointment_date;
       _selectedPatient = widget.appointment!.patientName;
@@ -102,6 +176,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
                     : null,
                 displayStringForOption: (Doctor option) => option.name,
                 onSelected: (Doctor selection) {
+                  doctor = selection;
                   setState(() {
                     _selectedDoctor = selection.name;
                   });
@@ -151,6 +226,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
                     : null,
                 displayStringForOption: (Patient option) => option.name,
                 onSelected: (Patient selection) {
+                  patient = selection;
                   setState(() {
                     _selectedPatient = selection.name;
                   });
@@ -273,9 +349,23 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Handle appointment creation here.
+                if (widget.appointment == null) {
+                  addAppointment().then((_) {
+                    Navigator.of(context).pop();
+                    widget.refresher();
+                  });
+                } else {
+                  patient = patients.firstWhere((element) =>
+                      element.name == widget.appointment!.patientName);
+                  doctor = doctors.firstWhere((element) =>
+                      element.name == widget.appointment!.doctorName);
+                  updateAppointment().then((_) {
+                    Navigator.of(context).pop();
+                    widget.refresher();
+                  });
+                }
               },
-              child: Text(widget.appointment != null ? 'Save' : 'Add'),
+              child: const Text('Save'),
             ),
           ],
         ),
