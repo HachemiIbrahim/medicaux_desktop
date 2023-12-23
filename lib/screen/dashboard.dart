@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medicaux_desktop/screen/doctor_staff.dart';
+import 'package:medicaux_desktop/screen/staff_doctor/staff_doctor_screen.dart';
 import 'package:medicaux_desktop/screen/patient/patient_screen.dart';
 import 'package:medicaux_desktop/screen/staff/staff_screen.dart';
 import 'package:medicaux_desktop/screen/traitement_screen.dart';
@@ -75,7 +75,7 @@ class _DashBoardState extends State<DashBoard> {
                       'Home',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color:
-                                _currentIndex == 6 ? Colors.grey : Colors.white,
+                                _currentIndex == 0 ? Colors.grey : Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -95,7 +95,7 @@ class _DashBoardState extends State<DashBoard> {
                       'Patient',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
-                              _currentIndex == 6 ? Colors.grey : Colors.white,
+                              _currentIndex == 1 ? Colors.grey : Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
@@ -114,7 +114,7 @@ class _DashBoardState extends State<DashBoard> {
                       'Appointment',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
-                              _currentIndex == 6 ? Colors.grey : Colors.white,
+                              _currentIndex == 2 ? Colors.grey : Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
@@ -133,7 +133,7 @@ class _DashBoardState extends State<DashBoard> {
                       'Doctor',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
-                              _currentIndex == 6 ? Colors.grey : Colors.white,
+                              _currentIndex == 3 ? Colors.grey : Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
@@ -152,7 +152,7 @@ class _DashBoardState extends State<DashBoard> {
                       'Traitement',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
-                              _currentIndex == 6 ? Colors.grey : Colors.white,
+                              _currentIndex == 4 ? Colors.grey : Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
@@ -171,7 +171,7 @@ class _DashBoardState extends State<DashBoard> {
                       'Staff',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
-                              _currentIndex == 6 ? Colors.grey : Colors.white,
+                              _currentIndex == 5 ? Colors.grey : Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),

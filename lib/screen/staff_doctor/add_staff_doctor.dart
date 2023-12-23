@@ -1,33 +1,31 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:medicaux_desktop/model/appointment.dart';
 import 'package:http/http.dart' as http;
+import 'package:medicaux_desktop/model/staff.dart';
 import '../../model/doctor.dart';
 import '../../model/patient.dart';
 
-class AddEditAppointment extends StatefulWidget {
-  final Appointment? appointment;
+class AddEditDoctorStaff extends StatefulWidget {
   final Future<void> Function() refresher;
-  const AddEditAppointment(
-      {super.key, this.appointment, required this.refresher});
+  const AddEditDoctorStaff({super.key, required this.refresher});
 
   @override
-  State<AddEditAppointment> createState() => _AddEditAppointmentState();
+  State<AddEditDoctorStaff> createState() => _AddEditDoctorStaffState();
 }
 
-class _AddEditAppointmentState extends State<AddEditAppointment> {
-  Future<void> addAppointment() async {
+class _AddEditDoctorStaffState extends State<AddEditDoctorStaff> {
+  Future<void> addDoctorStaff() async {
     final response = await http.post(
-      Uri.parse('http://localhost:8080/appointment'),
+      Uri.parse('http://localhost:8080/doctor_staff'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
         <String, String>{
-          'patientId': patient.patientId.toString(),
+          'staffId': staff.staffId.toString(),
           'doctorId': doctor.doctorId.toString(),
-          'appointmentDate': _selectedDate
+          'assignmentDate': _selectedDate
         },
       ),
     );
@@ -50,49 +48,12 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
     }
   }
 
-  Future<void> updateAppointment() async {
-    final response = await http.patch(
-      Uri.parse(
-          'http://localhost:8080/appointment/${widget.appointment!.appointmentId}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        <String, String>{
-          'patientId': patient.patientId.toString(),
-          'doctorId': doctor.doctorId.toString(),
-          'appointmentDate': _selectedDate
-        },
-      ),
-    );
-
-    if (response.statusCode == 202) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).clearSnackBars();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("appointment updated successfully"),
-        ),
-      );
-    } else {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).clearSnackBars();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("an error happened"),
-        ),
-      );
-    }
-  }
-
-  List<Patient> patients = [];
+  List<Staff> staffs = [];
   List<Doctor> doctors = [];
   late Doctor doctor;
-  late Patient patient;
+  late Staff staff;
 
-  String _selectedPatient = "";
+  String _selectedStaff = "";
   String _selectedDoctor = "";
   String _selectedDate = "";
   TextEditingController _dateController = TextEditingController();
@@ -100,30 +61,23 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
   @override
   void initState() {
     super.initState();
-    fetchPatients().then((value) => setState(() {
-          patients = value;
+    fetchStaff().then((value) => setState(() {
+          staffs = value;
         }));
     fetchDoctor().then((value) => setState(() {
           doctors = value;
         }));
-
-    if (widget.appointment != null) {
-      _dateController.text = widget.appointment!.appointment_date;
-      _selectedPatient = widget.appointment!.patientName;
-      _selectedDoctor = widget.appointment!.doctorName;
-      _selectedDate = widget.appointment!.appointment_date;
-    }
   }
 
-  Future<List<Patient>> fetchPatients() async {
-    final response = await http.get(Uri.parse('http://localhost:8080/patient'));
+  Future<List<Staff>> fetchStaff() async {
+    final response = await http.get(Uri.parse('http://localhost:8080/staff'));
 
     if (response.statusCode == 200) {
       return (jsonDecode(response.body) as List)
-          .map((i) => Patient.fromJson(i))
+          .map((i) => Staff.fromJson(i))
           .toList();
     } else {
-      throw Exception('Failed to load patients');
+      throw Exception('Failed to load staff');
     }
   }
 
@@ -143,9 +97,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.appointment != null
-            ? 'Edit Appointment'
-            : 'Add Appointment'),
+        title: const Text('Add Appointment'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -160,15 +112,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
                         .contains(textEditingValue.text.toLowerCase());
                   });
                 },
-                initialValue: widget.appointment != null
-                    ? TextEditingValue(
-                        text: doctors
-                            .firstWhere(
-                              (Doctor doctor) =>
-                                  doctor.name == widget.appointment!.doctorName,
-                            )
-                            .name)
-                    : null,
+                initialValue: null,
                 displayStringForOption: (Doctor option) => option.name,
                 onSelected: (Doctor selection) {
                   doctor = selection;
@@ -196,29 +140,20 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
             ),
             const SizedBox(height: 16.0),
             Container(
-              child: Autocomplete<Patient>(
+              child: Autocomplete<Staff>(
                 optionsBuilder: (TextEditingValue textEditingValue) {
-                  return patients.where((Patient patient) {
-                    return patient.name
+                  return staffs.where((Staff staff) {
+                    return staff.name
                         .toLowerCase()
                         .contains(textEditingValue.text.toLowerCase());
                   });
                 },
-                initialValue: widget.appointment != null
-                    ? TextEditingValue(
-                        text: patients
-                            .firstWhere(
-                              (Patient patient) =>
-                                  patient.name ==
-                                  widget.appointment!.patientName,
-                            )
-                            .name)
-                    : null,
-                displayStringForOption: (Patient option) => option.name,
-                onSelected: (Patient selection) {
-                  patient = selection;
+                initialValue: null,
+                displayStringForOption: (Staff option) => option.name,
+                onSelected: (Staff selection) {
+                  staff = selection;
                   setState(() {
-                    _selectedPatient = selection.name;
+                    _selectedStaff = selection.name;
                   });
                 },
                 fieldViewBuilder: (BuildContext context,
@@ -229,7 +164,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
                     controller: textEditingController,
                     focusNode: focusNode,
                     decoration: InputDecoration(
-                      hintText: 'Select a patient',
+                      hintText: 'Select a staff',
                       contentPadding: const EdgeInsets.all(8.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
@@ -285,7 +220,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
                 }
               },
               decoration: InputDecoration(
-                labelText: 'Appointment Date',
+                labelText: 'Assignment Date',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -317,8 +252,7 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
                           data: ThemeData.light().copyWith(
                             primaryColor: Colors.deepPurpleAccent,
                             colorScheme: const ColorScheme.light(
-                              primary:
-                                  Colors.deepPurpleAccent, // body text color
+                              primary: Colors.deepPurpleAccent,
                             ).copyWith(secondary: Colors.deepPurpleAccent),
                           ),
                           child: child!,
@@ -339,21 +273,10 @@ class _AddEditAppointmentState extends State<AddEditAppointment> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                if (widget.appointment == null) {
-                  addAppointment().then((_) {
-                    Navigator.of(context).pop();
-                    widget.refresher();
-                  });
-                } else {
-                  patient = patients.firstWhere((element) =>
-                      element.name == widget.appointment!.patientName);
-                  doctor = doctors.firstWhere((element) =>
-                      element.name == widget.appointment!.doctorName);
-                  updateAppointment().then((_) {
-                    Navigator.of(context).pop();
-                    widget.refresher();
-                  });
-                }
+                addDoctorStaff().then((_) {
+                  Navigator.of(context).pop();
+                  widget.refresher();
+                });
               },
               child: const Text('Save'),
             ),
