@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:medicaux_desktop/screen/staff_doctor/staff_doctor_screen.dart';
 import 'package:medicaux_desktop/screen/patient/patient_screen.dart';
 import 'package:medicaux_desktop/screen/staff/staff_screen.dart';
-import 'package:medicaux_desktop/screen/traitement_screen.dart';
 
 import 'appointment/appointment_screen.dart';
 import 'doctor/doctor_screen.dart';
@@ -24,7 +23,6 @@ class _DashBoardState extends State<DashBoard> {
     const PatientScreen(),
     const AppointmentScreen(),
     const DoctorScreen(),
-    const TraitementScreen(),
     const StaffScreen(),
     const DoctorStaffScreen()
   ];
@@ -141,15 +139,15 @@ class _DashBoardState extends State<DashBoard> {
                   NavigationRailDestination(
                     padding: const EdgeInsets.all(10),
                     icon: ImageIcon(
-                      const AssetImage("assets/images/traitement.png"),
+                      const AssetImage("assets/images/nurse.png"),
                       color: _currentIndex == 4 ? Colors.grey : Colors.white,
                     ),
                     selectedIcon: ImageIcon(
-                      const AssetImage("assets/images/traitement.png"),
+                      const AssetImage("assets/images/nurse.png"),
                       color: _currentIndex == 4 ? Colors.grey : Colors.white,
                     ),
                     label: Text(
-                      'Traitement',
+                      'Staff',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
                               _currentIndex == 4 ? Colors.grey : Colors.white,
@@ -160,37 +158,18 @@ class _DashBoardState extends State<DashBoard> {
                   NavigationRailDestination(
                     padding: const EdgeInsets.all(10),
                     icon: ImageIcon(
-                      const AssetImage("assets/images/nurse.png"),
+                      const AssetImage("assets/images/doctor_staff.png"),
                       color: _currentIndex == 5 ? Colors.grey : Colors.white,
                     ),
                     selectedIcon: ImageIcon(
-                      const AssetImage("assets/images/nurse.png"),
+                      const AssetImage("assets/images/doctor_staff.png"),
                       color: _currentIndex == 5 ? Colors.grey : Colors.white,
-                    ),
-                    label: Text(
-                      'Staff',
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color:
-                              _currentIndex == 5 ? Colors.grey : Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  NavigationRailDestination(
-                    padding: const EdgeInsets.all(10),
-                    icon: ImageIcon(
-                      const AssetImage("assets/images/doctor_staff.png"),
-                      color: _currentIndex == 6 ? Colors.grey : Colors.white,
-                    ),
-                    selectedIcon: ImageIcon(
-                      const AssetImage("assets/images/doctor_staff.png"),
-                      color: _currentIndex == 6 ? Colors.grey : Colors.white,
                     ),
                     label: Text(
                       'Doctor Staff',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color:
-                              _currentIndex == 6 ? Colors.grey : Colors.white,
+                              _currentIndex == 5 ? Colors.grey : Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
