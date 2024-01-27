@@ -160,7 +160,7 @@ class _AddEditPatientScreenState extends State<AddEditPatientScreen> {
             TextFormField(
               initialValue: _phoneNumber,
               decoration: InputDecoration(
-                labelText: 'Pjone Number',
+                labelText: 'Phone Number',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),

@@ -97,7 +97,7 @@ class _AddEditDoctorStaffState extends State<AddEditDoctorStaff> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Appointment'),
+        title: const Text('Assign Staff'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
